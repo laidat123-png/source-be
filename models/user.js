@@ -18,16 +18,6 @@ const userSchema = new mongoose.Schema({
     address: { type: String }
 }, { timestamps: true })
 
-// userSchema.pre('save', function (next) {
-//     let user = this;
-//     bycript.hash(user.password, 10, function (err, hash) {
-//         if (!user) return next(err);
-//         else {
-//             user.password = hash;
-//             next();
-//         }
-//     })
-// })
 
 const User = mongoose.model('user', userSchema);
 module.exports = User;
