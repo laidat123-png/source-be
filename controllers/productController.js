@@ -231,9 +231,19 @@ exports.deleteOneProduct = async (req, res, next) => {
           message: "Sản phẩm đã được mua. Không được xóa!"
         });
       }
+
+      // Xóa sản phẩm khỏi cơ sở dữ liệu
       const product = await Product.findByIdAndDelete(productID);
+
+      // Xóa sản phẩm khỏi giỏ hàng của tất cả người dùng
+      await User.updateMany(
+        { "cart.product": productID },
+        { $pull: { cart: { product: productID } } }
+      );
+
       res.status(200).json({
-        status: 'success'
+        status: 'success',
+        message: 'Sản phẩm đã được xóa và giỏ hàng của người dùng đã được cập nhật'
       });
     } else {
       res.status(403).json({
