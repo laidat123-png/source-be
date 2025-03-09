@@ -62,7 +62,11 @@ exports.getOneProduct = async (req, res, next) => {
     // Lọc các đánh giá của người dùng đã bị xóa
     product.review = product.review.filter(review => review.userID !== null);
 
-    console.log('success', product);
+    // Tính lại số sao trung bình
+    const totalStars = product.review.reduce((t, c) => t + c.stars, 0);
+    product.averagedStars = product.review.length > 0 ? totalStars / product.review.length : 0;
+
+    await product.save();
     res.status(200).json({
       status: 'success',
       product
@@ -273,11 +277,13 @@ exports.addReviewToProduct = async (req, res, next) => {
     // Lọc các đánh giá của người dùng đã bị xóa
     product.review = product.review.filter(review => review.userID !== null);
 
+    // Thêm đánh giá mới
     product.review.unshift(data);
-    const averagedStars = product.review.reduce((t, c) => {
-      return t + c.stars;
-    }, 0);
-    product.averagedStars = averagedStars / product.review.length;
+
+    // Tính lại số sao trung bình
+    const totalStars = product.review.reduce((t, c) => t + c.stars, 0);
+    product.averagedStars = product.review.length > 0 ? totalStars / product.review.length : 0;
+
     await product.save();
     res.json({
       status: 'success',

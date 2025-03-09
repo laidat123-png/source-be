@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Product = require('../models/product');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const lodash = require('lodash');
@@ -104,8 +105,33 @@ exports.deleteOneUser = async (req, res, next) => {
   try {
     const { userID } = req.params;
     const user = await User.findByIdAndDelete(userID);
+
+    if (!user) {
+      return res.status(404).json({
+        status: 'failed',
+        message: 'Người dùng không tồn tại'
+      });
+    }
+
+    // Xóa đánh giá của người dùng khỏi tất cả sản phẩm
+    await Product.updateMany(
+      { 'review.userID': userID },
+      { $pull: { review: { userID: userID } } }
+    );
+
+    // Cập nhật lại số sao trung bình của tất cả sản phẩm
+    const products = await Product.find({ 'review.userID': userID });
+    for (const product of products) {
+      const averagedStars = product.review.reduce((t, c) => {
+        return t + c.stars;
+      }, 0);
+      product.averagedStars = averagedStars / product.review.length;
+      await product.save();
+    }
+
     res.json({
-      status: "success"
+      status: "success",
+      message: 'Người dùng và đánh giá của họ đã được xóa'
     });
   } catch (err) {
     res.json({
