@@ -1,7 +1,6 @@
 const Orders = require('../models/orders');
 const User = require('../models/user');
 const Product = require('../models/product'); // Đảm bảo import đúng model Product
-const Revenue = require('../models/revenue');
 
 exports.getAllOrders = async (req, res, next) => {
     try {
@@ -114,24 +113,6 @@ exports.changeStatusOrders = async (req, res) => {
         // Cập nhật trạng thái đơn hàng
         const updatedOrder = await Orders.findByIdAndUpdate(orderID, { status: newStatus }, { new: true })
           .populate('productDetail.productID');
-  
-        // Nếu trạng thái đơn hàng là đã giao (status = 3), tính toán doanh thu
-        // if (newStatus === 3) {
-        //   const existingRevenue = await Revenue.findOne({ orderID: orderID });
-  
-        //   if (!existingRevenue) {
-        //     // Tính tổng tiền từ sản phẩm
-        //     const totalAmount = updatedOrder.productDetail.reduce((acc, item) => {
-        //       return acc + item.productID.price * item.quantity;
-        //     }, 0);
-            
-        //     await Revenue.create({
-        //       orderID: updatedOrder._id,
-        //       totalAmount,
-        //       createdAt: new Date(),
-        //     });
-        //   }
-        // }
   
         res.json({
           status: 'success',
