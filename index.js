@@ -19,8 +19,8 @@ const { checkCurrentUser } = require('./middleware/checkCurrentUser'); // Import
 // Cors
 var corsOptions = {
   origin: [
-    'https://bookstore-client-user.vercel.app',
-    'https://bookstore-client-dashboard.vercel.app',
+    // 'https://bookstore-client-user.vercel.app',
+    // 'https://bookstore-client-dashboard.vercel.app',
     'http://localhost:3000',
     'http://localhost:3006',
   ],
