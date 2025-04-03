@@ -1,3 +1,4 @@
+// lớp cơ sở
 class CloudStorage {
     async upload(path) {
       throw new Error('Method not implemented');

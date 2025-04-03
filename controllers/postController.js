@@ -228,20 +228,21 @@ exports.deleteComment = async (req, res) => {
             err
         });
     }
-};exports.getAllPost = async (req, res) => {
-    try {
-        const posts = await Post.find({})
-            .populate("author", "firstName lastName")
-            .populate("comment")
-            .sort("-createdAt");
-        res.json({
-            status: "success",
-            posts
-        });
-    } catch (err) {
-        res.json({
-            status: "failed",
-            err
-        });
-    }
 };
+// exports.getAllPost = async (req, res) => {
+//     try {
+//         const posts = await Post.find({})
+//             .populate("author", "firstName lastName")
+//             .populate("comment")
+//             .sort("-createdAt");
+//         res.json({
+//             status: "success",
+//             posts
+//         });
+//     } catch (err) {
+//         res.json({
+//             status: "failed",
+//             err
+//         });
+//     }
+// };

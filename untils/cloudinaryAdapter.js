@@ -1,3 +1,4 @@
+// Adapter
 const cloudinary = require('cloudinary').v2;
 const CloudStorage = require('./cloudStorage');
 

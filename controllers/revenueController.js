@@ -1,4 +1,5 @@
-const RevenueFacade = require('../untils/revenueFacade');
+// revenueController.js (Client)
+const RevenueFacade = require('../facade/revenueFacade');
 
 exports.getTotalRevenue = async (req, res) => {
   try {
@@ -10,15 +11,25 @@ exports.getTotalRevenue = async (req, res) => {
       orders,
     });
   } catch (err) {
-    res.status(500).json({ status: 'failed', message: err.message });
+    res.status(500).json({
+      status: 'failed',
+      message: err.message,
+    });
   }
 };
 
-exports.getCountDashboard = async (req, res, next) => {
+exports.getCountDashboard = async (req, res) => {
   try {
     const { countUser, countProduct, countOrder } = await RevenueFacade.getCountDashboard();
-    res.json({ countUser, countProduct, countOrder });
+    res.status(200).json({
+      countUser,
+      countProduct,
+      countOrder,
+    });
   } catch (err) {
-    res.json({ err: err.message });
+    res.status(500).json({
+      status: 'failed',
+      message: err.message,
+    });
   }
 };
