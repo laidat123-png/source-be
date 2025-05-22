@@ -20,8 +20,8 @@ class MongoDBSingleton {
       connection = await mongoose.connect(process.env.DB_URI, {
         useUnifiedTopology: true,
         useNewUrlParser: true,
-        useCreateIndex: true,
-        useFindAndModify: false
+        // useCreateIndex: true,
+        // useFindAndModify: false
       });
       console.log('DB connect successfully');
       return connection;
